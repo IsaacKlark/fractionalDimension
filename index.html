@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>
+Wondercube
+</title>
+</head>
+<body>
+<svg width = "800" height = "600" id = "s1">
+<line id = "li0" x1 = "300", y1 = "400", x2 = "300", y2 = "400", style="stroke:#846532; 
+      stroke-width:5"/>
+</svg>
+</br>
+<form name = "f1">
+<input type = "checkbox" id = "xy"/> xy
+<input type = "checkbox" id = "xz"/> xz
+<input type = "checkbox" id = "yz"/> yz
+</br>
+<input type = "radio" name = "rad" id = "d3" checked/>3D 
+<input type = "radio" name = "rad" id = "d27"/>2.8D
+<input type = "radio" name = "rad" id = "d23"/>2.4D
+</form>
+<script>
+var xc = 400;
+var yc = 300;
+var x1 = [-100, 100, 100, -100, -100, 100, 100, -100,-100, 100, 100, -100];
+var y1 = [-100, -100, 100, 100, -100, -100, 100, 100, -100, -100, 100, 100];
+var x2 = [100, 100, -100, -100, 100, 100, -100, -100, -100, 100, 100, -100];
+var y2 = [-100, 100, 100, -100, -100, 100, 100, -100, -100, -100, 100, 100];
+var z1 = [100, 100, 100, 100, -100, -100, -100, -100, 100, 100, 100, 100];
+var z2 = [100, 100, 100, 100, -100, -100, -100, -100, -100, -100, -100, -100];
+var x1m = [-100, 100, 100, -100, -100, 100, 100, -100,-100, 100, 100, -100];
+var y1m = [-100, -100, 100, 100, -100, -100, 100, 100, -100, -100, 100, 100];
+var x2m = [100, 100, -100, -100, 100, 100, -100, -100, -100, 100, 100, -100];
+var y2m = [-100, 100, 100, -100, -100, 100, 100, -100, -100, -100, 100, 100];
+var z1m = [100, 100, 100, 100, -100, -100, -100, -100, 100, 100, 100, 100];
+var z2m = [100, 100, 100, 100, -100, -100, -100, -100, -100, -100, -100, -100];
+var lines = new Array(12);
+var svg = document.getElementById("s1");
+for (var i = 0;
+i < 12; i++)
+{
+lines[i] = document.getElementById("li0").cloneNode();
+svg.appendChild(lines[i]);
+}
+var xo1 = new Array(12);
+var yo1 = new Array(12);
+var xo2 = new Array(12);
+var yo2 = new Array(12);
+var timerDraw;
+var checkXY = document.getElementById("xy");
+var xyAngle = 0;
+var xyRad;
+var checkXZ = document.getElementById("xz");
+var xzAngle = 0;
+var xzRad;
+var checkYZ = document.getElementById("yz");
+var check3D = document.getElementById("d3");
+var check27D = document.getElementById("d27");
+var check23D = document.getElementById("d23");
+var yzAngle = 0;
+var yzRad;
+var a;
+var b;
+var c;
+var d;
+var e;
+var f;
+function draw()
+{
+for (var i = 0; i < 12; i++)
+{
+xo1[i] = xc + (x1[i]);
+yo1[i] = yc + (y1[i]);
+xo2[i] = xc + (x2[i]);
+yo2[i] = yc + (y2[i]);
+lines[i].setAttribute("x1", xo1[i]);
+lines[i].setAttribute("y1", yo1[i]);
+lines[i].setAttribute("x2", xo2[i]);
+lines[i].setAttribute("y2", yo2[i]);
+}
+if (checkXY.checked)
+{
+xyAngle++;
+}
+if (checkXZ.checked)
+{
+xzAngle++;
+}
+if (checkYZ.checked)
+{
+yzAngle++;
+}
+xyRad = xyAngle/180*Math.PI;
+a = Math.cos(xyRad);
+b = Math.sin(xyRad);
+xzRad = xzAngle/180*Math.PI;
+c = Math.cos(xzRad);
+d = Math.sin(xzRad);
+yzRad = yzAngle/180*Math.PI;
+e = Math.cos(yzRad);
+f = Math.sin(yzRad);
+if (check3D.checked)
+{
+for (var i = 0; i < 12; i++)
+{
+x1[i] = 450*(x1m[i]*(c*e) + y1m[i]*(-c*f) + z1m[i]*(-d))/
+((x1m[i]*(a*d*e+b*f) + y1m[i]*(b*e-a*d*f) + z1m[i]*(a*c))+450);
+y1[i] = 
+450*(x1m[i]*(-b*d*e+a*f) + y1m[i]*(a*e+b*d*f) + z1m[i]*(-b*c))/
+((x1m[i]*(a*d*e+b*f) + y1m[i]*(b*e-a*d*f) + z1m[i]*(a*c))+450);
+x2[i] = 450*(x2m[i]*(c*e) + y2m[i]*(-c*f) + z2m[i]*(-d))/
+((x2m[i]*(a*d*e+b*f) + y2m[i]*(b*e-a*d*f) + z2m[i]*(a*c))+450);
+y2[i] = 
+450*(x2m[i]*(-b*d*e+a*f) + y2m[i]*(a*e+b*d*f) + z2m[i]*(-b*c))/
+((x2m[i]*(a*d*e+b*f) + y2m[i]*(b*e-a*d*f) + z2m[i]*(a*c))+450);
+}
+}
+if (check27D.checked)
+{
+for (var i = 0; i < 12; i++)
+{
+x1[i] = 450*(x1m[i]*(a*c) + y1m[i]*(b*e-a*d*f) + z1m[i]*(-a*d-b*f))/
+((x1m[i]*(d)+ y1m[i]*(f) + z1m[i])+450);
+y1[i] = 
+450*(x1m[i]*(-b*c) + y1m[i]*(a*e+b*d*f) + z1m[i]*(b*d-a*f))/((x1m[i]*(d)+ y1m[i]*(f) + z1m[i])+450);
+x2[i] = 450*(x2m[i]*(a*c) + y2m[i]*(b*e-a*d*f) + z2m[i]*(-a*d-b*f))/
+((x2m[i]*(d)+ y2m[i]*(f) + z2m[i])+450);
+y2[i] = 
+450*(x2m[i]*(-b*c) + y2m[i]*(a*e+b*d*f) + z2m[i]*(b*d-a*f))/((x2m[i]*(d)+ y2m[i]*(f) + z2m[i])+450);
+}
+}
+if (check23D.checked)
+{
+for (var i = 0; i < 12; i++)
+{
+x1[i] = 450*(x1m[i]*(c*e) + y1m[i]*(-c*f) + z1m[i]*(d))/
+((x1m[i]*(d*e) + y1m[i]*(-d*f) + z1m[i])+450);
+y1[i] = 
+450*(x1m[i]*(a*f) + y1m[i]*(a*e))/((x1m[i]*(d*e) + y1m[i]*(-d*f) + z1m[i])+450);
+x2[i] = 450*(x2m[i]*(c*e) + y2m[i]*(-c*f) + z2m[i]*(d))/
+((x2m[i]*(d*e) + y2m[i]*(-d*f) + z2m[i])+450);
+y2[i] = 
+450*(x2m[i]*(a*f) + y2m[i]*(a*e))/((x2m[i]*(d*e) + y2m[i]*(-d*f) + z2m[i])+450);
+}
+}
+timerDraw = setTimeout("draw()", 40);
+}
+draw();
+</script>
+</body>
+</html>
